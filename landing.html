@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Food &amp; Beverage Commercial Pack — Make food look delicious in AI video</title>
+<meta name="description" content="Prompt pack for AI video that makes food and drinks look appetizing: real liquid behavior, steam, texture, and motivated lighting." />
+<style>
+  :root {
+    --bg: #faf6ef;
+    --bg-elev: #ffffff;
+    --bg-inset: #f1e9dd;
+    --ink: #1d1610;
+    --ink-soft: #5c5245;
+    --ink-faint: #8a7d6c;
+    --accent: #b45f06;
+    --accent-strong: #8f4a03;
+    --accent-ink: #fff8ee;
+    --gold: #e8a33d;
+    --line: rgba(29, 22, 16, 0.14);
+    --card-shadow: 0 24px 60px -24px rgba(60, 40, 10, 0.25);
+    --hero-glow: rgba(232, 163, 61, 0.16);
+    --glass: rgba(255, 255, 255, 0.7);
+    --grain-opacity: 0.05;
+  }
+  html[data-theme="dark"] {
+    --bg: #0d0a08;
+    --bg-elev: #171310;
+    --bg-inset: #100d0a;
+    --ink: #f3ead9;
+    --ink-soft: #c2b5a1;
+    --ink-faint: #8d8172;
+    --accent: #e8a33d;
+    --accent-strong: #f0b45a;
+    --accent-ink: #201304;
+    --gold: #e8a33d;
+    --line: rgba(243, 234, 217, 0.14);
+    --card-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+    --hero-glow: rgba(232, 163, 61, 0.1);
+    --glass: rgba(23, 19, 16, 0.72);
+    --grain-opacity: 0.08;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+  ::selection { background: var(--accent); color: var(--accent-ink); }
+  .serif { font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif; }
+
+  /* film grain overlay */
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 999;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .skip-link {
+    position: absolute; left: -999px; top: 0;
+    background: var(--accent); color: var(--accent-ink);
+    padding: 10px 18px; z-index: 1200; border-radius: 0 0 10px 0; font-weight: 600;
+  }
+  .skip-link:focus { left: 0; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  /* ============ NAV ============ */
+  nav {
+    position: sticky; top: 0; z-index: 900;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: var(--glass);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1120px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: 0.02em; font-size: 15px; }
+  .brand svg { flex-shrink: 0; }
+  .nav-actions { display: flex; align-items: center; gap: 10px; }
+  .theme-toggle {
+    width: 42px; height: 42px; border-radius: 50%;
+    border: 1px solid var(--line); background: transparent; color: var(--ink);
+    cursor: pointer; display: grid; place-items: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--accent); transform: rotate(15deg); }
+  .theme-toggle:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 3px;
+  }
+  .nav-cta {
+    background: var(--accent); color: var(--accent-ink);
+    padding: 10px 20px; border-radius: 999px; font-weight: 700; font-size: 14px;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 6px 20px -8px var(--accent);
+  }
+  .nav-cta:hover { transform: translateY(-2px); }
+
+  /* ============ HERO ============ */
+  .hero { position: relative; padding: 110px 0 90px; overflow: hidden; }
+  .hero::before {
+    content: "";
+    position: absolute; top: -30%; left: 50%; transform: translateX(-50%);
+    width: 900px; height: 900px; border-radius: 50%;
+    background: radial-gradient(circle, var(--hero-glow) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; text-align: center; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 7px 16px; font-size: 12.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-soft); font-weight: 600;
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 12px var(--gold); }
+  h1 {
+    font-size: clamp(40px, 7.2vw, 76px);
+    line-height: 1.04; letter-spacing: -0.02em;
+    margin: 28px auto 20px; max-width: 15ch;
+    font-weight: 500;
+  }
+  h1 em { font-style: italic; color: var(--accent-strong); }
+  .tagline {
+    font-size: clamp(17px, 2.4vw, 21px); color: var(--ink-soft);
+    max-width: 52ch; margin: 0 auto 14px;
+  }
+  .rating-row {
+    display: flex; justify-content: center; align-items: center; gap: 8px;
+    font-size: 14px; color: var(--ink-faint); margin: 10px 0 34px;
+  }
+  .stars { color: var(--gold); letter-spacing: 2px; font-size: 15px; }
+  .hero-cta-row { display: flex; justify-content: center; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--accent); color: var(--accent-ink);
+    font-size: 17px; font-weight: 700;
+    padding: 17px 34px; border-radius: 999px; border: none; cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 14px 40px -12px var(--accent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary:hover { transform: translateY(-3px) scale(1.02); }
+  .btn-primary .price-chip {
+    background: rgba(0,0,0,0.22); border-radius: 999px; padding: 3px 12px; font-size: 15px;
+  }
+  html[data-theme="light"] .btn-primary .price-chip { background: rgba(255,255,255,0.3); }
+  .btn-ghost {
+    color: var(--ink-soft); text-decoration: none; font-weight: 600; font-size: 15px;
+    border-bottom: 1px dashed var(--ink-faint); padding-bottom: 2px; cursor: pointer; background: none; border-top: none; border-left: none; border-right: none;
+  }
+  .btn-ghost:hover { color: var(--accent-strong); border-color: var(--accent); }
+  .micro-trust {
+    margin-top: 26px; display: flex; justify-content: center; gap: 26px; flex-wrap: wrap;
+    font-size: 13.5px; color: var(--ink-faint);
+  }
+  .micro-trust span { display: inline-flex; align-items: center; gap: 7px; }
+
+  /* steam animation */
+  .steam-stage { position: relative; height: 130px; margin: 30px auto 0; width: 220px; }
+  .cup {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 78px;
+    border: 2px solid var(--line); border-top: none;
+    border-radius: 0 0 60px 60px;
+    background: linear-gradient(to top, var(--bg-inset), transparent);
+  }
+  .cup::after {
+    content: ""; position: absolute; right: -30px; top: 8px;
+    width: 34px; height: 40px; border: 2px solid var(--line);
+    border-radius: 0 20px 20px 0; border-left: none;
+  }
+  .steam {
+    position: absolute; bottom: 84px; width: 8px; height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(to top, transparent, var(--ink-faint));
+    opacity: 0; filter: blur(3px);
+    animation: rise 3.6s infinite ease-in-out;
+  }
+  .steam.s1 { left: 84px; animation-delay: 0s; }
+  .steam.s2 { left: 106px; animation-delay: 1.2s; height: 56px; }
+  .steam.s3 { left: 128px; animation-delay: 2.3s; }
+  @keyframes rise {
+    0% { transform: translateY(10px) scaleX(1); opacity: 0; }
+    30% { opacity: 0.55; }
+    100% { transform: translateY(-46px) scaleX(2.4); opacity: 0; }
+  }
+
+  /* ============ MARQUEE ============ */
+  .marquee-band {
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    overflow: hidden; padding: 16px 0; white-space: nowrap;
+  }
+  .marquee-track { display: inline-flex; gap: 44px; animation: marquee 30s linear infinite; }
+  .marquee-track span {
+    font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 600; display: inline-flex; align-items: center; gap: 44px;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ============ SECTIONS ============ */
+  section { padding: 96px 0; }
+  .section-label {
+    font-size: 12.5px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent-strong); font-weight: 700; margin-bottom: 14px;
+  }
+  h2 { font-size: clamp(30px, 4.6vw, 48px); line-height: 1.12; letter-spacing: -0.015em; font-weight: 500; max-width: 20ch; }
+  .section-sub { color: var(--ink-soft); font-size: 17px; max-width: 60ch; margin-top: 16px; }
+
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* problem */
+  .problem-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
+  .pain-list { list-style: none; margin-top: 30px; display: grid; gap: 14px; }
+  .pain-list li {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--bg-elev); border: 1px solid var(--line);
+    padding: 16px 20px; border-radius: 16px; font-size: 15.5px; color: var(--ink-soft);
+  }
+  .pain-list .x { color: #c0392b; font-weight: 800; flex-shrink: 0; }
+  html[data-theme="dark"] .pain-list .x { color: #e0705f; }
+  .about-quote {
+    border-left: 3px solid var(--accent); padding: 6px 0 6px 26px;
+    font-size: 19px; line-height: 1.65; color: var(--ink);
+    font-style: italic;
+  }
+
+  /* prompt cards */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-top: 48px; }
+  .prompt-card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 20px;
+    padding: 26px 22px; box-shadow: var(--card-shadow);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+    position: relative; overflow: hidden;
+  }
+  .prompt-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .prompt-card:hover { transform: translateY(-6px); border-color: var(--accent); }
+  .prompt-card:hover::before { opacity: 1; }
+  .card-icon { width: 46px; height: 46px; margin-bottom: 16px; color: var(--accent-strong); }
+  .prompt-card h3 { font-size: 19px; margin-bottom: 6px; font-weight: 600; }
+  .prompt-card p { font-size: 14px; color: var(--ink-soft); }
+
+  /* rules */
+  .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 48px; }
+  .rule-item {
+    border: 1px solid var(--line); border-radius: 18px; padding: 26px;
+    background: linear-gradient(160deg, var(--bg-elev), transparent);
+  }
+  .rule-item .num {
+    font-size: 13px; font-weight: 800; color: var(--accent-strong);
+    letter-spacing: 0.12em; margin-bottom: 10px; display: block;
+  }
+  .rule-item h3 { font-size: 18px; margin-bottom: 8px; font-weight: 600; }
+  .rule-item p { font-size: 14.5px; color: var(--ink-soft); }
+
+  /* sample / peek */
+  .peek-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .peek-frame {
+    position: relative; border-radius: 22px; overflow: hidden;
+    border: 1px solid var(--line); background: var(--bg-inset);
+    box-shadow: var(--card-shadow); min-height: 380px;
+  }
+  .peek-doc { padding: 34px 32px; font-size: 14px; color: var(--ink-soft); }
+  .peek-doc .doc-title { font-size: 17px; color: var(--ink); font-weight: 700; margin-bottom: 14px; }
+  .peek-doc .bar { height: 9px; border-radius: 99px; background: var(--line); margin: 12px 0; }
+  .peek-doc .bar.w60 { width: 60%; } .peek-doc .bar.w85 { width: 85%; } .peek-doc .bar.w45 { width: 45%; } .peek-doc .bar.w70 { width: 70%; }
+  .peek-blur { filter: blur(7px); user-select: none; }
+  .peek-lock {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    background: linear-gradient(to top, var(--bg) 4%, transparent 60%);
+  }
+  .peek-lock-inner { text-align: center; padding: 0 30px; }
+  .peek-lock-inner p { font-size: 14px; color: var(--ink-soft); margin: 12px 0 20px; }
+
+  /* pricing */
+  .pricing-band {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 28px;
+    padding: 60px 48px; text-align: center; box-shadow: var(--card-shadow);
+    position: relative; overflow: hidden;
+  }
+  .pricing-band::before {
+    content: ""; position: absolute; top: -120px; right: -120px;
+    width: 340px; height: 340px; border-radius: 50%;
+    background: radial-gradient(circle, var(--hero-glow), transparent 70%);
+  }
+  .price-big { font-size: clamp(46px, 7vw, 72px); font-weight: 600; letter-spacing: -0.02em; margin: 18px 0 4px; }
+  .price-note { color: var(--ink-faint); font-size: 14.5px; margin-bottom: 30px; }
+  .included-list {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 26px;
+    margin: 0 auto 36px; max-width: 640px; list-style: none; text-align: left;
+  }
+  .included-list li { display: flex; gap: 9px; align-items: center; font-size: 14.5px; color: var(--ink-soft); }
+  .check { color: var(--accent-strong); font-weight: 800; }
+
+  /* faq */
+  .faq-list { margin-top: 44px; display: grid; gap: 12px; max-width: 760px; }
+  details {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 16px;
+    padding: 4px 22px; transition: border-color 0.2s;
+  }
+  details[open] { border-color: var(--accent); }
+  summary {
+    cursor: pointer; list-style: none; padding: 18px 0;
+    font-weight: 600; font-size: 16px; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary .chev { transition: transform 0.25s; color: var(--accent-strong); flex-shrink: 0; }
+  details[open] summary .chev { transform: rotate(180deg); }
+  details .answer { padding: 0 0 20px; color: var(--ink-soft); font-size: 15px; }
+
+  /* final cta */
+  .final-cta { text-align: center; padding: 110px 0 130px; }
+  .final-cta h2 { margin: 0 auto 18px; }
+  .final-cta .section-sub { margin: 0 auto 38px; }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 34px 0 90px;
+    color: var(--ink-faint); font-size: 13.5px;
+  }
+  .footer-inner { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; align-items: center; }
+
+  /* sticky mobile bar */
+  .sticky-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 950;
+    background: var(--glass); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--line);
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+    display: none; align-items: center; justify-content: space-between; gap: 14px;
+    transform: translateY(110%); transition: transform 0.35s ease;
+  }
+  .sticky-bar.visible { transform: translateY(0); }
+  .sticky-bar .sb-name { font-size: 13px; font-weight: 700; line-height: 1.3; }
+  .sticky-bar .sb-price { font-size: 13px; color: var(--ink-faint); }
+  .sticky-bar .sb-buy {
+    background: var(--accent); color: var(--accent-ink); border: none; cursor: pointer;
+    font-weight: 700; font-size: 15px; padding: 12px 26px; border-radius: 999px; text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* modal */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(10, 7, 4, 0.66); backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 24px;
+    max-width: 480px; width: 100%; padding: 38px 34px; position: relative;
+    box-shadow: 0 40px 90px -30px rgba(0,0,0,0.5);
+    animation: pop 0.3s ease;
+  }
+  @keyframes pop { from { transform: scale(0.94) translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal h3 { font-size: 24px; margin-bottom: 10px; font-weight: 600; }
+  .modal p { color: var(--ink-soft); font-size: 15px; margin-bottom: 26px; }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px;
+    width: 38px; height: 38px; border-radius: 50%;
+    border: 1px solid var(--line); background: transparent; color: var(--ink);
+    cursor: pointer; font-size: 17px; line-height: 1;
+  }
+
+  @media (max-width: 860px) {
+    .problem-grid, .peek-wrap { grid-template-columns: 1fr; gap: 36px; }
+    section { padding: 68px 0; }
+    .hero { padding: 76px 0 64px; }
+    .pricing-band { padding: 44px 26px; }
+    .sticky-bar { display: flex; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .steam, .marquee-track, .modal { animation: none !important; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav aria-label="Page navigation">
+  <div class="nav-inner">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/>
+      </svg>
+      <span data-gumroad-field="name">Food &amp; Beverage Commercial Pack</span>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light and dark mode">
+        <svg id="iconMoon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="iconSun" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <a class="nav-cta" data-gumroad-action="buy" href="#buy">Get the pack</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <span class="eyebrow"><span class="dot"></span> AI Video Prompt Pack</span>
+      <h1 class="serif">Make food &amp; drinks look <em>delicious</em> in AI video</h1>
+      <p class="tagline">Real liquid behavior. Believable steam. Lighting that creates appetite. A compact prompt system for food &amp; beverage commercials that stop looking artificial.</p>
+      <div class="rating-row" aria-label="Product rating">
+        <span class="stars" aria-hidden="true">★★★★★</span>
+        <span data-gumroad-field="rating">Be the first to review</span>
+        <span aria-hidden="true">·</span>
+        <span data-gumroad-field="review-count">New on Gumroad</span>
+      </div>
+      <div class="hero-cta-row">
+        <a class="btn-primary" data-gumroad-action="buy" href="#buy">
+          Get instant access
+          <span class="price-chip" data-gumroad-field="price">$19</span>
+        </a>
+        <button class="btn-ghost" type="button" id="peekBtn">Peek inside the pack</button>
+      </div>
+      <div class="micro-trust">
+        <span>⚡ Instant download</span>
+        <span>📄 2 dense pages, zero fluff</span>
+        <span>🎬 Works with your favorite AI video tool</span>
+      </div>
+      <div class="steam-stage" aria-hidden="true">
+        <div class="steam s1"></div><div class="steam s2"></div><div class="steam s3"></div>
+        <div class="cup"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee-band" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Liquid physics ✦ Steam ✦ Condensation ✦ Crumb &amp; crust ✦ Motivated light ✦ Pour shots ✦ Appetite appeal ✦ </span>
+      <span>Liquid physics ✦ Steam ✦ Condensation ✦ Crumb &amp; crust ✦ Motivated light ✦ Pour shots ✦ Appetite appeal ✦ </span>
+    </div>
+  </div>
+
+  <!-- PROBLEM -->
+  <section id="problem" aria-labelledby="problem-h">
+    <div class="wrap problem-grid">
+      <div class="reveal">
+        <p class="section-label">The problem</p>
+        <h2 id="problem-h">AI video makes food look <span class="serif" style="font-style:italic">plastic</span></h2>
+        <p class="section-sub" data-gumroad-field="description">Food and drinks are some of the hardest things to make look appetizing in AI video. This pack focuses on real liquid behavior, steam, texture, and lighting that creates appetite appeal.</p>
+        <ul class="pain-list">
+          <li><span class="x" aria-hidden="true">✕</span> Coffee that pours like syrup and never ripples</li>
+          <li><span class="x" aria-hidden="true">✕</span> Steam that looks like smoke from a fog machine</li>
+          <li><span class="x" aria-hidden="true">✕</span> Burgers with wax-paper cheese and sweaty buns</li>
+          <li><span class="x" aria-hidden="true">✕</span> Flat, sourceless light that kills all appetite</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <p class="about-quote serif">Viewers can’t say why a food shot feels fake — they just scroll past it. Appetite is a physics problem <em>and</em> a lighting problem. This pack solves both at the prompt level.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIDE: 5 PROMPTS -->
+  <section id="inside" aria-labelledby="inside-h" style="background:var(--bg-inset)">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="section-label">What’s inside</p>
+        <h2 id="inside-h">5 complete, production-ready example prompts</h2>
+        <p class="section-sub">Each one is a full commercial shot — copy, adapt to your product, and generate.</p>
+      </div>
+      <div class="cards-grid">
+        <article class="prompt-card reveal">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+          <h3>Coffee</h3>
+          <p>Slow-motion pour with true crema behavior, micro-ripples, and morning-window light.</p>
+        </article>
+        <article class="prompt-card reveal">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l-1.5 18h-9L6 3Z"/><path d="M12 3v6"/><path d="M7.5 12h9"/></svg>
+          <h3>Smoothie</h3>
+          <p>Viscous blends, suspended fruit, and condensation beads that read cold and fresh.</p>
+        </article>
+        <article class="prompt-card reveal">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10a8 8 0 0 1 16 0"/><path d="M3 14h18"/><path d="M4 18a8 8 0 0 0 16 0"/></svg>
+          <h3>Burger</h3>
+          <p>Cheese pull physics, char texture, and the steam-wisp timing that sells heat.</p>
+        </article>
+        <article class="prompt-card reveal">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l-1 18H7L6 3Z"/><path d="M8 7c1.5 1.5 6.5 1.5 8 0"/><path d="M9 12h6"/></svg>
+          <h3>Craft Beer</h3>
+          <p>Carbonation streams, head retention, and backlit amber glow through the glass.</p>
+        </article>
+        <article class="prompt-card reveal">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 21h10"/><path d="M12 21v-6"/><path d="M5 4h14l-2 9a5 5 0 0 1-10 0L5 4Z"/><path d="M8 8c2 1.5 6 1.5 8 0"/></svg>
+          <h3>Dessert</h3>
+          <p>Glossy ganache, sugar-crystal sparkle, and crumb detail that survives the render.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- RULES SYSTEM -->
+  <section id="system" aria-labelledby="system-h">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="section-label">The system behind the prompts</p>
+        <h2 id="system-h">Not just prompts — the rules that make them work</h2>
+      </div>
+      <div class="rules-grid">
+        <div class="rule-item reveal">
+          <span class="num">01</span>
+          <h3>Liquid, steam &amp; condensation rules</h3>
+          <p>The vocabulary of realistic fluid motion: viscosity cues, ripple decay, wisp density, and bead placement.</p>
+        </div>
+        <div class="rule-item reveal">
+          <span class="num">02</span>
+          <h3>Food texture rules</h3>
+          <p>Crumb, crust, char, gloss — surface detail words that keep AI from smoothing everything into plastic.</p>
+        </div>
+        <div class="rule-item reveal">
+          <span class="num">03</span>
+          <h3>Motivated lighting setups</h3>
+          <p>Window, hearth, bar-backlight — light sources with a reason to exist, so shots feel filmed, not rendered.</p>
+        </div>
+        <div class="rule-item reveal">
+          <span class="num">04</span>
+          <h3>Emotional arcs that drive desire</h3>
+          <p>Structure each shot as anticipation → reveal → payoff. The story beat is what makes viewers hungry.</p>
+        </div>
+        <div class="rule-item reveal">
+          <span class="num">05</span>
+          <h3>Negative list for food artifacts</h3>
+          <p>A ready-to-paste block that kills the usual suspects: waxy cheese, fog-machine steam, dead garnish, and more.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PEEK -->
+  <section id="peek" aria-labelledby="peek-h" style="background:var(--bg-inset)">
+    <div class="wrap peek-wrap">
+      <div class="reveal">
+        <p class="section-label">Sneak peek</p>
+        <h2 id="peek-h">Dense, practical, two pages</h2>
+        <p class="section-sub">No filler, no theory lectures. Every line is either a prompt you can paste or a rule you can apply. Structure shown here — the goods unlock after checkout.</p>
+        <div class="hero-cta-row" style="justify-content:flex-start;margin-top:26px">
+          <button class="btn-ghost" type="button" id="peekBtn2">See the structure</button>
+        </div>
+      </div>
+      <div class="peek-frame reveal">
+        <div class="peek-doc peek-blur" aria-hidden="true">
+          <p class="doc-title">☕ Coffee — full commercial prompt</p>
+          <div class="bar w85"></div><div class="bar w70"></div><div class="bar w60"></div><div class="bar w85"></div>
+          <p class="doc-title" style="margin-top:22px">🍺 Craft Beer — full commercial prompt</p>
+          <div class="bar w70"></div><div class="bar w85"></div><div class="bar w45"></div><div class="bar w60"></div>
+        </div>
+        <div class="peek-lock">
+          <div class="peek-lock-inner">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--accent-strong)"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <p>The full prompts unlock instantly after purchase.</p>
+            <a class="btn-primary" data-gumroad-action="buy" href="#buy" style="font-size:15px;padding:13px 26px">Unlock for <span data-gumroad-field="price">$19</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="buy" aria-labelledby="buy-h">
+    <div class="wrap">
+      <div class="pricing-band reveal">
+        <p class="section-label">One-time purchase</p>
+        <h2 id="buy-h" style="margin:0 auto">Get the whole pack</h2>
+        <p class="price-big serif" data-gumroad-field="price">$19</p>
+        <p class="price-note">Pay once. Download instantly. Use forever.</p>
+        <ul class="included-list">
+          <li><span class="check" aria-hidden="true">✓</span> 5 complete example prompts</li>
+          <li><span class="check" aria-hidden="true">✓</span> Liquid, steam &amp; condensation rules</li>
+          <li><span class="check" aria-hidden="true">✓</span> Motivated lighting setups</li>
+          <li><span class="check" aria-hidden="true">✓</span> Emotional arc framework</li>
+          <li><span class="check" aria-hidden="true">✓</span> Food-artifact negative list</li>
+          <li><span class="check" aria-hidden="true">✓</span> 2 pages, instant PDF access</li>
+        </ul>
+        <a class="btn-primary" data-gumroad-action="buy" href="#buy">
+          I want this — <span data-gumroad-field="price">$19</span>
+        </a>
+        <p class="price-note" style="margin:18px 0 0">Secure checkout via Gumroad · Instant download</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" aria-labelledby="faq-h" style="padding-top:0">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="section-label">Questions</p>
+        <h2 id="faq-h">FAQ</h2>
+      </div>
+      <div class="faq-list">
+        <details class="reveal">
+          <summary>Which AI video tools does this work with?<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+          <p class="answer">The prompts and rules are model-agnostic — they’re written as natural-language direction you can paste into any modern AI video generator (text-to-video or image-to-video) and adapt to its syntax.</p>
+        </details>
+        <details class="reveal">
+          <summary>Is this a video course or a template file?<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+          <p class="answer">It’s a compact 2-page written pack: five complete prompts plus the rule systems and negative list behind them. No videos to sit through — you read it in minutes and use it immediately.</p>
+        </details>
+        <details class="reveal">
+          <summary>I’m new to AI video. Is this too advanced?<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+          <p class="answer">No — the example prompts work as-is with copy and paste, so beginners get strong results immediately. The rules sections then teach you why they work, so you can write your own.</p>
+        </details>
+        <details class="reveal">
+          <summary>How do I receive it?<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+          <p class="answer">Instantly. Checkout is handled securely by Gumroad, and your download link arrives the moment payment completes.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta" aria-labelledby="final-h" style="padding-top:0">
+    <div class="wrap reveal">
+      <h2 id="final-h">Your next food shot could look <span class="serif" style="font-style:italic">edible</span></h2>
+      <p class="section-sub" style="text-align:center">Stop fighting plastic-looking renders. Get the pack and make your next AI commercial delicious.</p>
+      <a class="btn-primary" data-gumroad-action="buy" href="#buy">
+        Get the pack — <span class="price-chip" data-gumroad-field="price">$19</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© <span id="year">2025</span> · <span data-gumroad-field="name">Food &amp; Beverage Commercial Pack</span></span>
+    <span>Sold securely via Gumroad · Instant download</span>
+  </div>
+</footer>
+
+<!-- STICKY MOBILE BAR -->
+<div class="sticky-bar" id="stickyBar">
+  <div>
+    <div class="sb-name" data-gumroad-field="name">Food &amp; Beverage Commercial Pack</div>
+    <div class="sb-price"><span data-gumroad-field="price">$19</span> · instant download</div>
+  </div>
+  <a class="sb-buy" data-gumroad-action="buy" href="#buy">Buy now</a>
+</div>
+
+<!-- PEEK MODAL -->
+<div class="modal-backdrop" id="peekModal" role="presentation">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" type="button" id="modalClose" aria-label="Close">✕</button>
+    <h3 id="modalTitle" class="serif">Inside the pack</h3>
+    <p>Five full commercial prompts — Coffee, Smoothie, Burger, Craft Beer, Dessert — each with its liquid/steam rules, motivated lighting setup, emotional arc, and a ready-to-paste negative list. Two dense pages. The complete text unlocks instantly after checkout.</p>
+    <a class="btn-primary" data-gumroad-action="buy" href="#buy" style="width:100%;justify-content:center">
+      Unlock now — <span class="price-chip" data-gumroad-field="price">$19</span>
+    </a>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---- theme ---- */
+  var root = document.documentElement;
+  var moon = document.getElementById("iconMoon");
+  var sun = document.getElementById("iconSun");
+  function applyTheme(t) {
+    root.setAttribute("data-theme", t);
+    var dark = t === "dark";
+    moon.style.display = dark ? "" : "none";
+    sun.style.display = dark ? "none" : "";
+    try { localStorage.setItem("fbcp-theme", t); } catch (e) {}
+  }
+  var saved = null;
+  try { saved = localStorage.getItem("fbcp-theme"); } catch (e) {}
+  if (saved === "light" || saved === "dark") {
+    applyTheme(saved);
+  } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+    applyTheme("light");
+  } else {
+    applyTheme("dark");
+  }
+  document.getElementById("themeToggle").addEventListener("click", function () {
+    applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+  });
+
+  /* ---- year ---- */
+  document.getElementById("year").textContent = String(new Date().getFullYear());
+
+  /* ---- scroll reveal ---- */
+  var revealEls = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add("in"); });
+  }
+
+  /* ---- sticky mobile bar ---- */
+  var bar = document.getElementById("stickyBar");
+  var hero = document.querySelector(".hero");
+  function onScroll() {
+    var past = window.scrollY > (hero ? hero.offsetHeight : 500);
+    bar.classList.toggle("visible", past);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* ---- modal ---- */
+  var modal = document.getElementById("peekModal");
+  var lastFocus = null;
+  function openModal() {
+    lastFocus = document.activeElement;
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+    document.getElementById("modalClose").focus();
+  }
+  function closeModal() {
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  ["peekBtn", "peekBtn2"].forEach(function (id) {
+    var b = document.getElementById(id);
+    if (b) b.addEventListener("click", openModal);
+  });
+  document.getElementById("modalClose").addEventListener("click", closeModal);
+  modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+  });
+
+  /* ---- smooth anchor for buy links that also carry data-gumroad-action ---- */
+  document.querySelectorAll('a[href="#buy"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      /* gumroad's delegated handler intercepts the buy action; when the page is
+         viewed standalone (no gumroad parent), fall back to the pricing anchor */
+      if (window === window.parent && !window.__gumroadBuyWired) {
+        e.preventDefault();
+        var t = document.getElementById("buy");
+        if (t) t.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
